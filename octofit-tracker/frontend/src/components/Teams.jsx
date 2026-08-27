@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { fetchResource } from '../api.js'
 import { ResourceState, ResourceView } from './shared.jsx'
 
+const teamsEndpoint = import.meta.env.VITE_CODESPACE_NAME?.trim()
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams/`
+  : '/api/teams/'
+
 function Teams() {
   const [teams, setTeams] = useState([])
   const [status, setStatus] = useState('loading')
@@ -9,7 +13,7 @@ function Teams() {
 
   useEffect(() => {
     const controller = new AbortController()
-    fetchResource('teams', controller.signal).then(setTeams).then(() => setStatus('ready')).catch((requestError) => {
+    fetchResource(teamsEndpoint, controller.signal).then(setTeams).then(() => setStatus('ready')).catch((requestError) => {
       if (requestError.name !== 'AbortError') { setError(requestError.message); setStatus('error') }
     })
     return () => controller.abort()

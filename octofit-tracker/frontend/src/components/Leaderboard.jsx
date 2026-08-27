@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { displayName, fetchResource } from '../api.js'
 import { ResourceState, ResourceView } from './shared.jsx'
 
+const leaderboardEndpoint = import.meta.env.VITE_CODESPACE_NAME?.trim()
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/`
+  : '/api/leaderboard/'
+
 function Leaderboard() {
   const [leaders, setLeaders] = useState([])
   const [status, setStatus] = useState('loading')
@@ -9,7 +13,7 @@ function Leaderboard() {
 
   useEffect(() => {
     const controller = new AbortController()
-    fetchResource('leaderboard', controller.signal)
+    fetchResource(leaderboardEndpoint, controller.signal)
       .then(setLeaders)
       .then(() => setStatus('ready'))
       .catch((requestError) => {

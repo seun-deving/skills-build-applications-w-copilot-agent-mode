@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { fetchResource } from '../api.js'
 import { ResourceState, ResourceView } from './shared.jsx'
 
+const workoutsEndpoint = import.meta.env.VITE_CODESPACE_NAME?.trim()
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+  : '/api/workouts/'
+
 function Workouts() {
   const [workouts, setWorkouts] = useState([])
   const [status, setStatus] = useState('loading')
@@ -9,7 +13,7 @@ function Workouts() {
 
   useEffect(() => {
     const controller = new AbortController()
-    fetchResource('workouts', controller.signal).then(setWorkouts).then(() => setStatus('ready')).catch((requestError) => {
+    fetchResource(workoutsEndpoint, controller.signal).then(setWorkouts).then(() => setStatus('ready')).catch((requestError) => {
       if (requestError.name !== 'AbortError') { setError(requestError.message); setStatus('error') }
     })
     return () => controller.abort()

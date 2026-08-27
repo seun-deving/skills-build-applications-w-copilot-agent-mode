@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { fetchResource } from '../api.js'
 import { ResourceState, ResourceView } from './shared.jsx'
 
+const usersEndpoint = import.meta.env.VITE_CODESPACE_NAME?.trim()
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+  : '/api/users/'
+
 function Users() {
   const [users, setUsers] = useState([])
   const [status, setStatus] = useState('loading')
@@ -9,7 +13,7 @@ function Users() {
 
   useEffect(() => {
     const controller = new AbortController()
-    fetchResource('users', controller.signal).then(setUsers).then(() => setStatus('ready')).catch((requestError) => {
+    fetchResource(usersEndpoint, controller.signal).then(setUsers).then(() => setStatus('ready')).catch((requestError) => {
       if (requestError.name !== 'AbortError') { setError(requestError.message); setStatus('error') }
     })
     return () => controller.abort()

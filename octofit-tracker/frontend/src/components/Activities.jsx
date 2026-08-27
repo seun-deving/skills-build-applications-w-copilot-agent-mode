@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { fetchResource, formatDate } from '../api.js'
 import { ResourceState, ResourceView } from './shared.jsx'
 
+const activitiesEndpoint = import.meta.env.VITE_CODESPACE_NAME?.trim()
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+  : '/api/activities/'
+
 function Activities() {
   const [activities, setActivities] = useState([])
   const [status, setStatus] = useState('loading')
@@ -9,7 +13,7 @@ function Activities() {
 
   useEffect(() => {
     const controller = new AbortController()
-    fetchResource('activities', controller.signal)
+    fetchResource(activitiesEndpoint, controller.signal)
       .then(setActivities)
       .then(() => setStatus('ready'))
       .catch((requestError) => {
