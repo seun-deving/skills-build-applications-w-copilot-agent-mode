@@ -1,5 +1,15 @@
 # React + Vite
 
+## API configuration
+
+Define `VITE_CODESPACE_NAME` in `octofit-tracker/frontend/.env.local` when using the GitHub Codespaces API, for example:
+
+```env
+VITE_CODESPACE_NAME=your-codespace-name
+```
+
+Vite exposes this value through `import.meta.env`. The frontend requests resources from `https://${VITE_CODESPACE_NAME}-8000.app.github.dev/api/[component]/`; when it is unset, requests fall back to the current host at `/api/[component]/`.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:
