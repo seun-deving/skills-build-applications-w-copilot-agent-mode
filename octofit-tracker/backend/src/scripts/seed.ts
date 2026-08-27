@@ -3,6 +3,7 @@ import { connectDatabase } from '../config/database.js';
 import { Activity, Leaderboard, Team, User, Workout } from '../models/index.js';
 
 /**
+ * Seed the octofit_db database with test data.
  * Replace the demo dataset so the script is safe to run repeatedly.
  */
 async function seedDatabase() {
